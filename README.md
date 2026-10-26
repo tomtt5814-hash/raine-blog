@@ -9,9 +9,14 @@
 ```bash
 npm install
 npm run dev        # http://127.0.0.1:5173
-npm run build      # 产物在 dist/
+npm run build      # 产物 dist/index.html 是单文件，双击就能打开
 npm run preview
 ```
+
+### 不想开服务器？
+
+`npm run build` 之后直接双击 `dist/index.html`，不需要服务器也不需要命令行。
+构建时 JS/CSS 会内联进这个 HTML（约 316KB），图片、音频、视频仍是同级文件夹里的文件，所以 `dist/` 要整个一起带走。
 
 ## 目录
 

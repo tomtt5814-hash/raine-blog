@@ -6,6 +6,7 @@ import { interestDetails } from "../data/interest-details.js";
 import { mediaFor, bvid, ytId } from "../data/interest-media.js";
 import { commentsFor } from "../data/interest-comments.js";
 import Reveal from "../components/Reveal.jsx";
+import { asset } from "../lib/asset.js";
 import Tilt from "../components/Tilt.jsx";
 
 function Stars({ n }) {
@@ -34,8 +35,8 @@ function Detail({ item, onClose }) {
   const media = mediaFor(item.name);
   const comments = commentsFor(item.name);
   const photos = [
-    ...(item.img ? ["/" + item.img] : []),
-    ...media.images.map((s) => "/" + s),
+    ...(item.img ? [asset(item.img)] : []),
+    ...media.images.map((s) => asset(s)),
   ];
   const [zoom, setZoom] = useState(null);
   const [notes, setNotes] = useState(() => notesFor(item.name));
@@ -134,7 +135,7 @@ function Detail({ item, onClose }) {
               onClick={() => setZoom(0)}
               aria-label="查看大图"
             >
-              <img className="sheet-cover" src={"/" + item.img} alt={item.name} />
+              <img className="sheet-cover" src={asset(item.img)} alt={item.name} />
             </button>
           )}
           <div className="sheet-body">
@@ -262,7 +263,7 @@ function Detail({ item, onClose }) {
                     onClick={() => setZoom((item.img ? 1 : 0) + i)}
                     aria-label={`查看大图：${item.name} 截图`}
                   >
-                    <img src={"/" + src} alt={`${item.name} 截图`} loading="lazy" />
+                    <img src={asset(src)} alt={`${item.name} 截图`} loading="lazy" />
                   </button>
                 ))}
               </div>
@@ -399,7 +400,7 @@ export default function Interests() {
                   {item.img && (
                     <img
                       className="interest-thumb"
-                      src={"/" + item.img}
+                      src={asset(item.img)}
                       alt={item.name}
                       loading="lazy"
                       width="64"

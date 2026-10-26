@@ -1,6 +1,6 @@
 /* ===== 苹果风视觉 token ===== */
 :root {
-  --bg: #f5f5f7;
+  --bg: #e9ebef;
   --card: #ffffff;
   --text: #1d1d1f;
   --text2: #6e6e73;
@@ -12,7 +12,7 @@
   --chip: #ffffff;
   --hover: rgba(0, 0, 0, 0.045);
   --field: #ffffff;
-  --nav-bg: rgba(245, 245, 247, 0.72);
+  --nav-bg: rgba(233, 235, 239, 0.72);
   --shadow: 0 18px 44px rgba(0, 0, 0, 0.08);
   --blob1: rgba(0, 113, 227, 0.12);
   --blob2: rgba(255, 149, 90, 0.10);
@@ -455,7 +455,7 @@ button {
     border-color var(--dur) var(--ease), background var(--dur) var(--ease);
 }
 
-/* 夜间模式：卡片压成毛玻璃，让身后的极光透出来 */
+/* 夜间：卡片默认就是毛玻璃，让身后的极光透出来 */
 [data-theme="dark"] .card {
   background: rgba(0, 0, 0, 0.3);
   border-color: rgba(255, 255, 255, 0.12);
@@ -467,6 +467,12 @@ button {
 [data-theme="dark"] .card:hover {
   background: rgba(0, 0, 0, 0.22);
   border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* 白天：可点卡片保持干净白卡，悬停只做轻微浮起 */
+[data-theme="light"] .card.tilt:hover {
+  border-color: color-mix(in srgb, var(--text2) 28%, transparent);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
 }
 
 .article-card {
@@ -483,10 +489,36 @@ button {
 }
 
 .cover {
+  position: relative;
   height: 132px;
   display: flex;
   align-items: flex-end;
   padding: 12px 14px;
+}
+
+/* 封面也压一层同款拉丝，跟卡身接上 */
+.card.tilt .cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      108deg,
+      rgba(255, 255, 255, 0) 30%,
+      rgba(255, 255, 255, 0.55) 46%,
+      rgba(255, 255, 255, 0) 62%
+    ),
+    repeating-linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.34) 0 1px,
+      rgba(110, 122, 142, 0.022) 1px 2px,
+      rgba(255, 255, 255, 0) 2px 4px
+    );
+}
+
+[data-theme="dark"] .card.tilt .cover::before {
+  content: none;
 }
 
 .cover span {
@@ -978,7 +1010,7 @@ textarea {
 
 .interest-items {
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .interest-item {
@@ -986,12 +1018,13 @@ textarea {
   gap: 14px;
   align-items: flex-start;
   padding: 14px;
+  height: 196px;
+  overflow: hidden;
   width: 100%;
   text-align: left;
   font: inherit;
   color: inherit;
   cursor: pointer;
-  background: var(--card);
 }
 
 .interest-item:hover {
@@ -1532,6 +1565,8 @@ textarea {
   background: #000;
   display: block;
 }
+
+.sheet-link {
   margin-top: 18px;
   display: inline-flex;
 }
@@ -1552,8 +1587,8 @@ textarea {
 
 .interest-thumb {
   flex: none;
-  width: 64px;
-  height: 86px;
+  width: 96px;
+  height: 128px;
   object-fit: cover;
   border-radius: 8px;
   background: var(--chip);
@@ -1565,7 +1600,7 @@ textarea {
 }
 
 .interest-name {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.35;
@@ -1581,14 +1616,14 @@ textarea {
 }
 
 .interest-body .meta {
-  font-size: 11.5px;
+  font-size: 12.5px;
   margin: 2px 0 0;
 }
 
 .interest-review {
   margin-top: 8px;
-  font-size: 13px;
-  line-height: 1.62;
+  font-size: 15px;
+  line-height: 1.66;
   color: var(--text2);
   overflow: hidden;
   display: -webkit-box;
@@ -1974,8 +2009,14 @@ audio {
   }
 
   .interest-thumb {
-    width: 56px;
-    height: 76px;
+    width: 72px;
+    height: 96px;
+  }
+
+  .interest-item {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
   }
 
   .sheet {
@@ -2075,35 +2116,123 @@ audio {
   }
 }
 
-/* 悬停时泛起一层白霜：更亮、更糙，指引更明确 */
+/* 可点卡片的过渡里带上 transform，倾斜更跟手 */
 .card.tilt {
-  transition: transform 90ms ease-out, backdrop-filter 200ms var(--ease),
-    -webkit-backdrop-filter 200ms var(--ease), background 200ms var(--ease),
-    border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+  transition: transform 90ms ease-out, border-color 200ms var(--ease),
+    box-shadow 200ms var(--ease), filter 200ms var(--ease);
+}
+
+/* 黑夜：可点卡片做成黑色金属板，右侧压一层暗金纹样，标题用金色 */
+[data-theme="dark"] .card.tilt {
+  position: relative;
+  background-color: #0e0f11;
+  background-image:
+    linear-gradient(
+      112deg,
+      rgba(255, 255, 255, 0) 26%,
+      rgba(255, 255, 255, 0.055) 46%,
+      rgba(255, 255, 255, 0) 66%
+    ),
+    radial-gradient(130% 120% at 92% -10%, #1e2024 0%, #121316 46%, #0a0b0d 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 22px 48px rgba(0, 0, 0, 0.6),
+    0 44px 80px rgba(0, 0, 0, 0.32);
+}
+
+/* 右侧几何暗纹，从中间向右渐显 */
+[data-theme="dark"] .card.tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2746%27%20height%3D%2746%27%20viewBox%3D%270%200%2046%2046%27%3E%0A%3Cg%20fill%3D%27none%27%20stroke%3D%27%23d9b45f%27%20stroke-width%3D%27.7%27%3E%0A%3Cpath%20d%3D%27M23%200%20L46%2023%20L23%2046%20L0%2023%20Z%27%20stroke-opacity%3D%27.18%27%2F%3E%0A%3Cpath%20d%3D%27M23%207%20L39%2023%20L23%2039%20L7%2023%20Z%27%20stroke-opacity%3D%27.26%27%2F%3E%0A%3Cpath%20d%3D%27M23%2013%20L33%2023%20L23%2033%20L13%2023%20Z%27%20stroke-opacity%3D%27.16%27%2F%3E%0A%3C%2Fg%3E%0A%3Cpath%20d%3D%27M23%2012%20L25.2%2020.8%20L34%2023%20L25.2%2025.2%20L23%2034%20L20.8%2025.2%20L12%2023%20L20.8%2020.8%20Z%27%20fill%3D%27%23e8c97a%27%20fill-opacity%3D%27.2%27%2F%3E%0A%3Cpath%20d%3D%27M23%2016%20L24.4%2021.6%20L30%2023%20L24.4%2024.4%20L23%2030%20L21.6%2024.4%20L16%2023%20L21.6%2021.6%20Z%27%20fill%3D%27%23f3dfa6%27%20fill-opacity%3D%27.28%27%2F%3E%0A%3Ccircle%20cx%3D%2723%27%20cy%3D%2723%27%20r%3D%271%27%20fill%3D%27%23f7e7b8%27%20fill-opacity%3D%27.5%27%2F%3E%0A%3C%2Fsvg%3E");
+  background-size: 46px 46px;
+  background-position: right -8px top -8px;
+  -webkit-mask-image: linear-gradient(100deg, transparent 56%, #000 96%);
+  mask-image: linear-gradient(100deg, transparent 56%, #000 96%);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .card.tilt .cover {
+  background: transparent;
+}
+
+[data-theme="dark"] .card.tilt .cover::before {
+  content: none;
+}
+
+[data-theme="dark"] .card.tilt .cover span {
+  color: rgba(232, 201, 122, 0.5);
+}
+
+/* 主标题：压一层金属金 */
+[data-theme="dark"] .card.tilt h3,
+[data-theme="dark"] .card.tilt h4,
+[data-theme="dark"] .card.tilt .interest-name {
+  color: #e3c377;
+  background-image: linear-gradient(180deg, #f8e8b8 0%, #dcb765 52%, #a9822f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="dark"] .card.tilt .summary,
+[data-theme="dark"] .card.tilt .interest-review {
+  color: rgba(245, 245, 247, 0.8);
+}
+
+[data-theme="dark"] .card.tilt .meta {
+  color: rgba(245, 245, 247, 0.52);
+}
+
+[data-theme="dark"] .card.tilt .tag {
+  color: rgba(232, 201, 122, 0.78);
+  border-color: rgba(232, 201, 122, 0.28);
 }
 
 [data-theme="dark"] .card.tilt:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.08) 48%,
-    rgba(255, 255, 255, 0.03)
+  border-color: rgba(232, 201, 122, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 28px 58px rgba(0, 0, 0, 0.66),
+    0 52px 92px rgba(0, 0, 0, 0.38);
+}
+
+/* 划过时一道反光扫过钢面 */
+[data-theme="dark"] .card.tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: linear-gradient(
+    102deg,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 60%
   );
-  border-color: rgba(255, 255, 255, 0.34);
-  backdrop-filter: blur(22px) saturate(115%);
-  -webkit-backdrop-filter: blur(22px) saturate(115%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 22px 50px rgba(0, 0, 0, 0.45);
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
 }
 
-[data-theme="dark"] .card.tilt:hover .meta,
-[data-theme="dark"] .card.tilt:hover .summary,
-[data-theme="dark"] .card.tilt:hover .interest-review,
-[data-theme="dark"] .card.tilt:hover .tag {
-  color: rgba(255, 255, 255, 0.86);
+[data-theme="dark"] .card.tilt:hover::after {
+  opacity: 1;
+  animation: cardSheen 900ms var(--ease) forwards;
 }
 
-[data-theme="light"] .card.tilt:hover {
-  background: #ffffff;
-  border-color: color-mix(in srgb, var(--text2) 30%, transparent);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.12);
+@keyframes cardSheen {
+  from {
+    background-position: 130% 0;
+  }
+  to {
+    background-position: -30% 0;
+  }
 }

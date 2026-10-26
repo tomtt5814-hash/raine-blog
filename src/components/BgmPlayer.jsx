@@ -1,9 +1,10 @@
+import { asset } from "../lib/asset.js";
 import { useEffect, useRef, useState } from "react";
 
 // 右下角悬浮 BGM 开关：形态参考绝区零官网——黑色圆形玻璃钮 + 细白描边 + 白色双音符。
 // 点击播放/暂停《Everything I Am》；组件挂在 App 根部，切页面不重建，播放状态延续。
 // 换成自己的完整版：把文件放进 public/audio/，改下面的 TRACK 即可。
-const TRACK = "/audio/everything-i-am-preview.m4a";
+const TRACK = asset("audio/everything-i-am-preview.m4a");
 
 export default function BgmPlayer() {
   const audioRef = useRef(null);

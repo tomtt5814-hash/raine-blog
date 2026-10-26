@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Nav from "./components/Nav.jsx";
 import Footer from "./components/Footer.jsx";
+import { asset } from "./lib/asset.js";
 import BgmPlayer from "./components/BgmPlayer.jsx";
 import Home from "./pages/Home.jsx";
 import Interests from "./pages/Interests.jsx";
@@ -74,8 +75,8 @@ export default function App() {
           <video
             ref={videoRef}
             className="bg-video"
-            src="/video/aurora-loop.mp4"
-            poster="/video/aurora-poster.jpg"
+            src={asset("video/aurora-loop.mp4")}
+            poster={asset("video/aurora-poster.jpg")}
             autoPlay
             muted
             loop
